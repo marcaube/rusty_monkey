@@ -14,6 +14,8 @@ fn test_next_token() {
         };
 
         let result = add(five, ten);
+        !-/*5;
+        5 < 10 > 5;
     ";
 
     let tests = [
@@ -51,6 +53,18 @@ fn test_next_token() {
         (TokenType::Comma, ","),
         (TokenType::Ident, "ten"),
         (TokenType::Rparen, ")"),
+        (TokenType::Semicolon, ";"),
+        (TokenType::Bang, "!"),
+        (TokenType::Minus, "-"),
+        (TokenType::Slash, "/"),
+        (TokenType::Asterisk, "*"),
+        (TokenType::Int, "5"),
+        (TokenType::Semicolon, ";"),
+        (TokenType::Int, "5"),
+        (TokenType::Lt, "<"),
+        (TokenType::Int, "10"),
+        (TokenType::Gt, ">"),
+        (TokenType::Int, "5"),
         (TokenType::Semicolon, ";"),
         (TokenType::Eof, ""),
     ];
