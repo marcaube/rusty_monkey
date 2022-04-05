@@ -42,7 +42,12 @@ impl Lexer {
             '}' => tok = new_token(TokenType::Rbrace, self.ch),
             ',' => tok = new_token(TokenType::Comma, self.ch),
             ';' => tok = new_token(TokenType::Semicolon, self.ch),
-            '\0' => tok = new_token(TokenType::Eof, '\0'),
+            '\0' => {
+                return Token {
+                    token_type: TokenType::Eof,
+                    literal: String::from(""),
+                }
+            }
             _ => {
                 if is_letter(self.ch) {
                     let identifier = self.read_identifier();
@@ -52,6 +57,14 @@ impl Lexer {
                     return Token {
                         token_type,
                         literal: identifier.to_string(),
+                    };
+                } else if is_digit(self.ch) {
+                    let token_type = TokenType::Int;
+                    let literal = self.read_number();
+
+                    return Token {
+                        token_type,
+                        literal: literal.to_string(),
                     };
                 } else {
                     tok = new_token(TokenType::Illegal, self.ch)
@@ -68,6 +81,17 @@ impl Lexer {
         let start = self.position;
 
         while is_letter(self.ch) {
+            self.read_char();
+        }
+
+        &self.input[start..self.position]
+    }
+
+    fn read_number(&mut self) -> &str {
+        // TODO: add support for floats, hex, octal and binary
+        let start = self.position;
+
+        while is_digit(self.ch) {
             self.read_char();
         }
 
@@ -93,4 +117,8 @@ fn new_token(token_type: TokenType, ch: char) -> Token {
 /// This function has a large impact on the language our interpreter will support
 fn is_letter(ch: char) -> bool {
     'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+}
+
+fn is_digit(ch: char) -> bool {
+    '0' <= ch && ch <= '9'
 }
