@@ -30,3 +30,12 @@ pub struct Token {
     pub token_type: TokenType,
     pub literal: String,
 }
+
+pub fn lookup_ident(ident: &str) -> TokenType {
+    // TODO: extract this mapping to a constant?
+    match ident {
+        "let" => TokenType::Let,
+        "fn" => TokenType::Function,
+        _ => TokenType::Ident,
+    }
+}
