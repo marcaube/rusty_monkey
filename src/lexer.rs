@@ -36,6 +36,12 @@ impl Lexer {
         match self.ch {
             '=' => tok = new_token(TokenType::Assign, self.ch),
             '+' => tok = new_token(TokenType::Plus, self.ch),
+            '-' => tok = new_token(TokenType::Minus, self.ch),
+            '!' => tok = new_token(TokenType::Bang, self.ch),
+            '/' => tok = new_token(TokenType::Slash, self.ch),
+            '*' => tok = new_token(TokenType::Asterisk, self.ch),
+            '<' => tok = new_token(TokenType::Lt, self.ch),
+            '>' => tok = new_token(TokenType::Gt, self.ch),
             '(' => tok = new_token(TokenType::Lparen, self.ch),
             ')' => tok = new_token(TokenType::Rparen, self.ch),
             '{' => tok = new_token(TokenType::Lbrace, self.ch),

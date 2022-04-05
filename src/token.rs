@@ -9,8 +9,14 @@ pub enum TokenType {
     Int,   // 1343456
 
     // Operators
-    Assign, // =
-    Plus,   // +
+    Assign,   // =
+    Plus,     // +
+    Minus,    // -
+    Bang,     // !
+    Asterisk, // *
+    Slash,    // /
+    Lt,       // <
+    Gt,       // >
 
     // Delimiters
     Comma,     // ,
