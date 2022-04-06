@@ -22,6 +22,9 @@ fn test_next_token() {
         } else {
             return false;
         }
+
+        10 == 10;
+        10 != 9;
     ";
 
     let tests = [
@@ -89,6 +92,14 @@ fn test_next_token() {
         (TokenType::False, "false"),
         (TokenType::Semicolon, ";"),
         (TokenType::Rbrace, "}"),
+        (TokenType::Int, "10"),
+        (TokenType::Eq, "=="),
+        (TokenType::Int, "10"),
+        (TokenType::Semicolon, ";"),
+        (TokenType::Int, "10"),
+        (TokenType::Noteq, "!="),
+        (TokenType::Int, "9"),
+        (TokenType::Semicolon, ";"),
         (TokenType::Eof, ""),
     ];
 

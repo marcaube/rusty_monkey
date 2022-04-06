@@ -17,6 +17,8 @@ pub enum TokenType {
     Slash,    // /
     Lt,       // <
     Gt,       // >
+    Eq,       // ==
+    Noteq,    // !=
 
     // Delimiters
     Comma,     // ,

@@ -27,6 +27,11 @@ impl Lexer {
         self.read_position += 1;
     }
 
+    /// Similar to read_char() but does not increment positions
+    pub fn peek_char(&mut self) -> char {
+        self.input.chars().nth(self.read_position).unwrap_or('\0')
+    }
+
     /// Look at the current character and return the appropriate Token
     pub fn next_token(&mut self) -> Token {
         let tok: Token;
@@ -34,10 +39,32 @@ impl Lexer {
         self.eat_whitespace();
 
         match self.ch {
-            '=' => tok = new_token(TokenType::Assign, self.ch),
+            '=' => {
+                if self.peek_char() == '=' {
+                    self.read_char();
+
+                    tok = Token {
+                        token_type: TokenType::Eq,
+                        literal: String::from("=="),
+                    }
+                } else {
+                    tok = new_token(TokenType::Assign, self.ch);
+                }
+            }
             '+' => tok = new_token(TokenType::Plus, self.ch),
             '-' => tok = new_token(TokenType::Minus, self.ch),
-            '!' => tok = new_token(TokenType::Bang, self.ch),
+            '!' => {
+                if self.peek_char() == '=' {
+                    self.read_char();
+
+                    tok = Token {
+                        token_type: TokenType::Noteq,
+                        literal: String::from("!="),
+                    }
+                } else {
+                    tok = new_token(TokenType::Bang, self.ch);
+                }
+            }
             '/' => tok = new_token(TokenType::Slash, self.ch),
             '*' => tok = new_token(TokenType::Asterisk, self.ch),
             '<' => tok = new_token(TokenType::Lt, self.ch),
@@ -49,10 +76,11 @@ impl Lexer {
             ',' => tok = new_token(TokenType::Comma, self.ch),
             ';' => tok = new_token(TokenType::Semicolon, self.ch),
             '\0' => {
+                // Early return to prevent advancing the read position
                 return Token {
                     token_type: TokenType::Eof,
                     literal: String::from(""),
-                }
+                };
             }
             _ => {
                 if is_letter(self.ch) {
@@ -68,6 +96,7 @@ impl Lexer {
                     let token_type = TokenType::Int;
                     let literal = self.read_number();
 
+                    // Early return to prevent advancing the read position
                     return Token {
                         token_type,
                         literal: literal.to_string(),
