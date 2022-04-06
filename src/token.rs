@@ -30,6 +30,11 @@ pub enum TokenType {
     // Keywords
     Function, // fn
     Let,      // let
+    True,     // true
+    False,    // false
+    If,       // if
+    Else,     // else
+    Return,   // return
 }
 
 pub struct Token {
@@ -42,6 +47,11 @@ pub fn lookup_ident(ident: &str) -> TokenType {
     match ident {
         "let" => TokenType::Let,
         "fn" => TokenType::Function,
+        "true" => TokenType::True,
+        "false" => TokenType::False,
+        "if" => TokenType::If,
+        "else" => TokenType::Else,
+        "return" => TokenType::Return,
         _ => TokenType::Ident,
     }
 }
