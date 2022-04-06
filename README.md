@@ -21,6 +21,12 @@ defined in the book [Writing an interpreter in Go](https://interpreterbook.com).
  cargo test
  ```
 
+ Start the [REPL](https://en.wikipedia.org/wiki/Read–eval–print_loop):
+
+ ```sh
+ cargo run
+ ```
+
 
 ## Helpful reference implementations
 
