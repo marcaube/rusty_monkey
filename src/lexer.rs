@@ -1,4 +1,4 @@
-use crate::token::{lookup_ident, Token, TokenType};
+use crate::token::{lookup_ident, Token};
 
 pub struct Lexer {
     pub input: String,        // the source code
@@ -42,67 +42,46 @@ impl Lexer {
             '=' => {
                 if self.peek_char() == '=' {
                     self.read_char();
-
-                    tok = Token {
-                        token_type: TokenType::Eq,
-                        literal: String::from("=="),
-                    }
+                    tok = Token::Eq;
                 } else {
-                    tok = new_token(TokenType::Assign, self.ch);
+                    tok = Token::Assign;
                 }
-            }
-            '+' => tok = new_token(TokenType::Plus, self.ch),
-            '-' => tok = new_token(TokenType::Minus, self.ch),
+            },
+            '+' => tok = Token::Plus,
+            '-' => tok = Token::Minus,
             '!' => {
                 if self.peek_char() == '=' {
                     self.read_char();
-
-                    tok = Token {
-                        token_type: TokenType::Noteq,
-                        literal: String::from("!="),
-                    }
+                    tok = Token::Noteq;
                 } else {
-                    tok = new_token(TokenType::Bang, self.ch);
+                    tok = Token::Bang;
                 }
-            }
-            '/' => tok = new_token(TokenType::Slash, self.ch),
-            '*' => tok = new_token(TokenType::Asterisk, self.ch),
-            '<' => tok = new_token(TokenType::Lt, self.ch),
-            '>' => tok = new_token(TokenType::Gt, self.ch),
-            '(' => tok = new_token(TokenType::Lparen, self.ch),
-            ')' => tok = new_token(TokenType::Rparen, self.ch),
-            '{' => tok = new_token(TokenType::Lbrace, self.ch),
-            '}' => tok = new_token(TokenType::Rbrace, self.ch),
-            ',' => tok = new_token(TokenType::Comma, self.ch),
-            ';' => tok = new_token(TokenType::Semicolon, self.ch),
+            },
+            '/' => tok = Token::Slash,
+            '*' => tok = Token::Asterisk,
+            '<' => tok = Token::Lt,
+            '>' => tok = Token::Gt,
+            '(' => tok = Token::Lparen,
+            ')' => tok = Token::Rparen,
+            '{' => tok = Token::Lbrace,
+            '}' => tok = Token::Rbrace,
+            ',' => tok = Token::Comma,
+            ';' => tok = Token::Semicolon,
             '\0' => {
                 // Early return to prevent advancing the read position
-                return Token {
-                    token_type: TokenType::Eof,
-                    literal: String::from(""),
-                };
-            }
+                return Token::Eof;
+            },
             _ => {
                 if is_letter(self.ch) {
                     let identifier = self.read_identifier();
-                    let token_type = lookup_ident(identifier);
 
-                    // Early return to prevent advancing the read position
-                    return Token {
-                        token_type,
-                        literal: identifier.to_string(),
-                    };
+                    return lookup_ident(identifier);
                 } else if is_digit(self.ch) {
-                    let token_type = TokenType::Int;
                     let literal = self.read_number();
 
-                    // Early return to prevent advancing the read position
-                    return Token {
-                        token_type,
-                        literal: literal.to_string(),
-                    };
+                    return Token::Int(literal.to_string());
                 } else {
-                    tok = new_token(TokenType::Illegal, self.ch)
+                    tok = Token::Illegal;
                 }
             }
         }
@@ -137,14 +116,6 @@ impl Lexer {
         while self.ch == ' ' || self.ch == '\t' || self.ch == '\n' || self.ch == '\r' {
             self.read_char();
         }
-    }
-}
-
-/// Helper method to create a new Token from a type and a char
-fn new_token(token_type: TokenType, ch: char) -> Token {
-    Token {
-        token_type,
-        literal: ch.to_string(),
     }
 }
 
