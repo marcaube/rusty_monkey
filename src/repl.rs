@@ -1,6 +1,6 @@
 use std::io::{self, Stdin, Stdout, Write};
 
-use crate::{lexer::Lexer, token::TokenType};
+use crate::{lexer::Lexer, token::Token};
 
 pub fn start() {
     let stdin: Stdin = io::stdin();
@@ -19,7 +19,7 @@ pub fn start() {
         let mut lexer = Lexer::new(input.trim());
         let mut tok = lexer.next_token();
 
-        while tok.token_type != TokenType::Eof {
+        while tok != Token::Eof {
             print!("{:?}\n", tok);
             tok = lexer.next_token();
         }
