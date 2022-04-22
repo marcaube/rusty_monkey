@@ -1,6 +1,6 @@
 # Rusty Monkey
 
-[![Tests](https://github.com/marcaube/rusty_monkey/actions/workflows/tests.yml/badge.svg)](https://github.com/marcaube/rusty_monkey/actions/workflows/tests.yml)
+[![Tests](https://github.com/marcaube/rusty_monkey/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/marcaube/rusty_monkey/actions/workflows/tests.yml)
 
 A [Rust](https://www.rust-lang.org) implementation of the [Monkey programming
 language](https://interpreterbook.com/#the-monkey-programming-language), as
