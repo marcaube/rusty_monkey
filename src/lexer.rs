@@ -57,7 +57,14 @@ impl Lexer {
                     tok = Token::Bang;
                 }
             },
-            '/' => tok = Token::Slash,
+            '/' => {
+                if self.peek_char() == '/' {
+                    self.eat_complete_line();
+                    tok = Token::Comment;
+                } else {
+                    tok = Token::Slash;
+                }
+            },
             '*' => tok = Token::Asterisk,
             '<' => tok = Token::Lt,
             '>' => tok = Token::Gt,
@@ -114,6 +121,12 @@ impl Lexer {
 
     fn eat_whitespace(&mut self) {
         while self.ch == ' ' || self.ch == '\t' || self.ch == '\n' || self.ch == '\r' {
+            self.read_char();
+        }
+    }
+
+    fn eat_complete_line(&mut self) {
+        while self.ch != '\n' && self.ch != '\0' {
             self.read_char();
         }
     }

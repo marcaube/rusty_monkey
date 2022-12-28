@@ -13,10 +13,14 @@ fn test_next_token() {
             x + y
         };
 
+        // One line comment
+
         let result = add(five, ten);
         !-/*5;
         5 < 10 > 5;
 
+        // Multi-line
+        // comment
         if (5 < 10) {
             return true;
         } else {
@@ -25,7 +29,7 @@ fn test_next_token() {
 
         10 == 10;
         10 != 9;
-    ";
+        // Comment at the end";
 
     let tests = [
         Token::Let,
@@ -53,6 +57,7 @@ fn test_next_token() {
         Token::Ident("y".to_string()),
         Token::Rbrace,
         Token::Semicolon,
+        Token::Comment,
         Token::Let,
         Token::Ident("result".to_string()),
         Token::Assign,
@@ -75,6 +80,8 @@ fn test_next_token() {
         Token::Gt,
         Token::Int("5".to_string()),
         Token::Semicolon,
+        Token::Comment,
+        Token::Comment,
         Token::If,
         Token::Lparen,
         Token::Int("5".to_string()),
@@ -100,6 +107,7 @@ fn test_next_token() {
         Token::Noteq,
         Token::Int("9".to_string()),
         Token::Semicolon,
+        Token::Comment,
         Token::Eof,
     ];
 
