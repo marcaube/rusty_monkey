@@ -37,6 +37,8 @@ pub enum Token {
     If,       // if
     Else,     // else
     Return,   // return
+
+    Comment,  // //
 }
 
 pub fn lookup_ident(ident: &str) -> Token {
