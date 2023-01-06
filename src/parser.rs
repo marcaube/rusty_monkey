@@ -66,11 +66,12 @@ impl Parser {
         // Parse the variable name
         // TODO: find a way to use expect_peek_token here as well
         let identifier = match self.current_token.clone() {
-            Token::Ident(name) => {
-                name
-            },
+            Token::Ident(name) => name,
             _ => {
-                self.errors.push(format!("Expected next token to be Ident, got {:?} instead", self.current_token));
+                self.errors.push(format!(
+                    "Expected next token to be Ident, got {:?} instead",
+                    self.current_token
+                ));
 
                 return None;
             }
@@ -113,6 +114,9 @@ impl Parser {
     }
 
     fn peek_error(&mut self, token_type: Token) {
-        self.errors.push(format!("Expected next token to be {:?}, got {:?} instead", token_type, self.peek_token));
+        self.errors.push(format!(
+            "Expected next token to be {:?}, got {:?} instead",
+            token_type, self.peek_token
+        ));
     }
 }
