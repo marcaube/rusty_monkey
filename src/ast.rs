@@ -6,4 +6,5 @@ pub struct Program {
 #[derive(Debug, PartialEq, Eq)]
 pub enum Statement {
     Let(String),
+    Return, // TODO: add expression
 }

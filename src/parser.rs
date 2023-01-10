@@ -54,6 +54,7 @@ impl Parser {
     fn parse_statement(&mut self) -> Option<Statement> {
         match self.current_token {
             Token::Let => self.parse_let_statement(),
+            Token::Return => self.parse_return_statement(),
             _ => None,
         }
     }
@@ -89,6 +90,19 @@ impl Parser {
         }
 
         Some(Statement::Let(identifier))
+    }
+
+    fn parse_return_statement(&mut self) -> Option<Statement> {
+        // Advance to skip the `return` token
+        self.next_token();
+
+        // Skip the tokens until we encounter a semicolon
+        // TODO: parse the return expression
+        while !self.current_token_is(Token::Semicolon) {
+            self.next_token();
+        }
+
+        Some(Statement::Return)
     }
 
     fn current_token_is(&mut self, expected_token: Token) -> bool {
