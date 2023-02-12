@@ -123,11 +123,7 @@ impl Parser {
             self.next_token();
         }
 
-        // TODO: this seems a bit convoluted just to get at the value...
-        match expression {
-            Some(exp) => Some(Statement::Expression(exp)),
-            _ => None,
-        }
+        expression.map(Statement::Expression)
     }
 
     fn parse_expression(&mut self, _precedence: Precedence) -> Option<Expression> {
