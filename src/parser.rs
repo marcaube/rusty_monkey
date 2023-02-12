@@ -11,7 +11,7 @@ enum Precedence {
     // LessGreater, // < or >
     // Sum,         // +
     // Product,     // *
-    // Prefix,      // -X or !X
+    Prefix,      // -X or !X
     // Call,        // my_function(X)
 }
 
@@ -145,8 +145,18 @@ impl Parser {
                     None
                 }
             },
+            Token::Bang => self.parse_prefix_expression(),
+            Token::Minus => self.parse_prefix_expression(),
             _ => None,
         }
+    }
+
+    fn parse_prefix_expression(&mut self) -> Option<Expression> {
+        let operator = self.current_token.clone();
+        self.next_token();
+        let expression = self.parse_expression(Precedence::Prefix);
+
+        expression.map(|expression| Expression::Prefix(operator.to_string(), Box::new(expression)))
     }
 
     fn current_token_is(&mut self, expected_token: Token) -> bool {

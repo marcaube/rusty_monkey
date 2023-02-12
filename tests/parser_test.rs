@@ -75,7 +75,8 @@ fn test_identifier_expression() {
         program.statements,
         vec![
             Statement::Expression(Expression::Identifier("foobar".to_string()))
-        ]
+        ],
+        "Wrong program statements"
     )
 }
 
@@ -95,8 +96,40 @@ fn test_integer_literal_expression() {
         program.statements,
         vec![
             Statement::Expression(Expression::Integer(5))
-        ]
+        ],
+        "Wrong program statements"
     )
+}
+
+#[test]
+fn test_parsing_prefix_expressions() {
+    let test_cases = vec![
+        ("!5;", "!", 5),
+        ("-15;", "-", 15),
+    ];
+
+    for (input, operator, value) in test_cases {
+        let lexer = Lexer::new(input);
+        let mut parser = Parser::new(lexer);
+
+        let program = parser.parse_program();
+
+        assert_no_parser_errors(&parser);
+        assert_program_length(&program, 1);
+
+        assert_eq!(
+            program.statements,
+            vec![
+                Statement::Expression(
+                    Expression::Prefix(
+                        operator.to_string(),
+                        Box::new(Expression::Integer(value))
+                    )
+                )
+            ],
+            "Wrong program statements"
+        )
+    }
 }
 
 fn assert_no_parser_errors(parser: &Parser) {

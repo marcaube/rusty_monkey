@@ -17,7 +17,7 @@ impl fmt::Display for Statement {
         match self {
             Statement::Let(ident) => write!(f, "let {};", ident),
             Statement::Return => write!(f, "return;"),
-            _ => write!(f, "Unsupported!"),
+            Statement::Expression(expression) => write!(f, "{};", expression),
         }
     }
 }
@@ -26,6 +26,7 @@ impl fmt::Display for Statement {
 pub enum Expression {
     Identifier(String),
     Integer(usize),
+    Prefix(String, Box<Expression>),
 }
 
 impl fmt::Display for Expression {
@@ -33,6 +34,7 @@ impl fmt::Display for Expression {
         match self {
             Expression::Identifier(ident) => write!(f, "{}", ident),
             Expression::Integer(int) => write!(f, "{}", int),
+            Expression::Prefix(operator, expression) => write!(f, "({},{})", operator, expression),
         }
     }
 }
