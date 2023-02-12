@@ -1,4 +1,4 @@
-use rusty_monkey::{ast::Statement, lexer::Lexer, parser::Parser};
+use rusty_monkey::{ast::{Statement, Program}, lexer::Lexer, parser::Parser};
 
 #[test]
 fn test_let_statement() {
@@ -12,14 +12,9 @@ fn test_let_statement() {
     let mut parser = Parser::new(lexer);
 
     let program = parser.parse_program();
-    check_parser_errors(&parser);
 
-    assert_eq!(
-        program.statements.len(),
-        3,
-        "Expected 3 program statements, got {}",
-        program.statements.len()
-    );
+    assert_no_parser_errors(&parser);
+    assert_program_length(&program, 3);
 
     assert_eq!(
         program.statements,
@@ -44,14 +39,9 @@ fn test_return_statement() {
     let mut parser = Parser::new(lexer);
 
     let program = parser.parse_program();
-    check_parser_errors(&parser);
 
-    assert_eq!(
-        program.statements.len(),
-        3,
-        "Expected 3 program statements, got {}",
-        program.statements.len()
-    );
+    assert_no_parser_errors(&parser);
+    assert_program_length(&program, 3);
 
     assert_eq!(
         program.statements,
@@ -65,6 +55,16 @@ fn test_return_statement() {
 
 }
 
-fn check_parser_errors(parser: &Parser) {
+fn assert_no_parser_errors(parser: &Parser) {
     assert_eq!(parser.errors.len(), 0, "Parser errors: {:?}", parser.errors,);
+}
+
+fn assert_program_length(program: &Program, expected_length: usize) {
+    assert_eq!(
+        program.statements.len(),
+        expected_length,
+        "Expected {} program statements, got {}",
+        expected_length,
+        program.statements.len(),
+    )
 }
