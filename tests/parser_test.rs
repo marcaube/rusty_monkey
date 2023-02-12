@@ -1,4 +1,8 @@
-use rusty_monkey::{ast::{Statement, Program}, lexer::Lexer, parser::Parser};
+use rusty_monkey::{
+    ast::{Expression, Program, Statement},
+    lexer::Lexer,
+    parser::Parser,
+};
 
 #[test]
 fn test_let_statement() {
@@ -53,6 +57,26 @@ fn test_return_statement() {
         "Wrong program statements"
     );
 
+}
+
+#[test]
+fn test_identifier_expression() {
+    let input = "foobar;";
+
+    let lexer = Lexer::new(input);
+    let mut parser = Parser::new(lexer);
+
+    let program = parser.parse_program();
+
+    assert_no_parser_errors(&parser);
+    assert_program_length(&program, 1);
+
+    assert_eq!(
+        program.statements,
+        vec![
+            Statement::Expression(Expression::Identifier("foobar".to_string()))
+        ]
+    )
 }
 
 fn assert_no_parser_errors(parser: &Parser) {

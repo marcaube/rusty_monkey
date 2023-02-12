@@ -9,6 +9,7 @@ pub struct Program {
 pub enum Statement {
     Let(String),
     Return, // TODO: add expression
+    Expression(Expression),
 }
 
 impl fmt::Display for Statement {
@@ -16,6 +17,20 @@ impl fmt::Display for Statement {
         match self {
             Statement::Let(ident) => write!(f, "let {};", ident),
             Statement::Return => write!(f, "return;"),
+            _ => write!(f, "Unsupported!"),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub enum Expression {
+    Identifier(String),
+}
+
+impl fmt::Display for Expression {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Expression::Identifier(ident) => write!(f, "{}", ident),
         }
     }
 }

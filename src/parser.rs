@@ -1,8 +1,19 @@
 use crate::{
-    ast::{Program, Statement},
+    ast::{Expression, Program, Statement},
     lexer::Lexer,
     token::Token,
 };
+
+// Operator precedence, or "order of operations"
+enum Precedence {
+    Lowest,
+    // Equals,      // ==
+    // LessGreater, // < or >
+    // Sum,         // +
+    // Product,     // *
+    // Prefix,      // -X or !X
+    // Call,        // my_function(X)
+}
 
 pub struct Parser {
     lexer: Lexer,
@@ -55,7 +66,7 @@ impl Parser {
         match self.current_token {
             Token::Let => self.parse_let_statement(),
             Token::Return => self.parse_return_statement(),
-            _ => None,
+            _ => self.parse_expression_statement(),
         }
     }
 
@@ -103,6 +114,32 @@ impl Parser {
         }
 
         Some(Statement::Return)
+    }
+
+    fn parse_expression_statement(&mut self) -> Option<Statement> {
+        let expression = self.parse_expression(Precedence::Lowest);
+
+        if self.peek_token_is(Token::Semicolon) {
+            self.next_token();
+        }
+
+        // TODO: this seems a bit convoluted just to get at the value...
+        match expression {
+            Some(exp) => Some(Statement::Expression(exp)),
+            _ => None,
+        }
+    }
+
+    fn parse_expression(&mut self, _precedence: Precedence) -> Option<Expression> {
+        self.parse_prefix(self.current_token.clone())
+    }
+
+    // Parse function for tokens in the prefix position
+    fn parse_prefix(&mut self, token: Token) -> Option<Expression> {
+        match token {
+            Token::Ident(ident) => Some(Expression::Identifier(ident)),
+            _ => None,
+        }
     }
 
     fn current_token_is(&mut self, expected_token: Token) -> bool {
