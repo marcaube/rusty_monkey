@@ -25,12 +25,14 @@ impl fmt::Display for Statement {
 #[derive(Debug, PartialEq, Eq)]
 pub enum Expression {
     Identifier(String),
+    Integer(usize),
 }
 
 impl fmt::Display for Expression {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Expression::Identifier(ident) => write!(f, "{}", ident),
+            Expression::Integer(int) => write!(f, "{}", int),
         }
     }
 }

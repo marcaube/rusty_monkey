@@ -134,6 +134,17 @@ impl Parser {
     fn parse_prefix(&mut self, token: Token) -> Option<Expression> {
         match token {
             Token::Ident(ident) => Some(Expression::Identifier(ident)),
+            Token::Int(int) => match int.parse() {
+                Ok(value) => Some(Expression::Integer(value)),
+                Err(_) => {
+                    self.errors.push(format!(
+                        "Could not parse {} as integer",
+                        int
+                    ));
+
+                    None
+                }
+            },
             _ => None,
         }
     }

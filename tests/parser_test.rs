@@ -79,6 +79,26 @@ fn test_identifier_expression() {
     )
 }
 
+#[test]
+fn test_integer_literal_expression() {
+    let input = "5;";
+
+    let lexer = Lexer::new(input);
+    let mut parser = Parser::new(lexer);
+
+    let program = parser.parse_program();
+
+    assert_no_parser_errors(&parser);
+    assert_program_length(&program, 1);
+
+    assert_eq!(
+        program.statements,
+        vec![
+            Statement::Expression(Expression::Integer(5))
+        ]
+    )
+}
+
 fn assert_no_parser_errors(parser: &Parser) {
     assert_eq!(parser.errors.len(), 0, "Parser errors: {:?}", parser.errors,);
 }
