@@ -1,7 +1,4 @@
-use rusty_monkey::{
-    lexer::Lexer,
-    token::Token,
-};
+use rusty_monkey::{lexer::Lexer, token::Token};
 
 #[test]
 fn test_next_token() {

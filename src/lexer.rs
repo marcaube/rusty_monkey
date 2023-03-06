@@ -46,7 +46,7 @@ impl Lexer {
                 } else {
                     tok = Token::Assign;
                 }
-            },
+            }
             '+' => tok = Token::Plus,
             '-' => tok = Token::Minus,
             '!' => {
@@ -56,7 +56,7 @@ impl Lexer {
                 } else {
                     tok = Token::Bang;
                 }
-            },
+            }
             '/' => tok = Token::Slash,
             '*' => tok = Token::Asterisk,
             '<' => tok = Token::Lt,
@@ -70,7 +70,7 @@ impl Lexer {
             '\0' => {
                 // Early return to prevent advancing the read position
                 return Token::Eof;
-            },
+            }
             _ => {
                 if is_letter(self.ch) {
                     let identifier = self.read_identifier();
@@ -122,9 +122,9 @@ impl Lexer {
 /// Helper method to check if a char is a letter
 /// This function has a large impact on the language our interpreter will support
 fn is_letter(ch: char) -> bool {
-    'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+    ('a'..='z').contains(&ch) || ('A'..='Z').contains(&ch) || ch == '_'
 }
 
 fn is_digit(ch: char) -> bool {
-    '0' <= ch && ch <= '9'
+    ('0'..='9').contains(&ch)
 }

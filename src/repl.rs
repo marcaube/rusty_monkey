@@ -7,7 +7,7 @@ pub fn start() {
     let mut stdout: Stdout = io::stdout();
     let mut input = String::new();
 
-    print!("This is the Rusty Monkey REPL, feel free to type in commands!\n");
+    println!("This is the Rusty Monkey REPL, feel free to type in commands!");
 
     loop {
         print!(">>> ");
@@ -20,7 +20,7 @@ pub fn start() {
         let mut tok = lexer.next_token();
 
         while tok != Token::Eof {
-            print!("{:?}\n", tok);
+            println!("{:?}", tok);
             tok = lexer.next_token();
         }
 

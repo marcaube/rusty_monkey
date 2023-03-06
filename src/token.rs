@@ -1,4 +1,6 @@
-#[derive(Debug, PartialEq)]
+use std::fmt::Display;
+
+#[derive(Debug, PartialEq, Eq, Clone, Hash)]
 pub enum Token {
     // Special types
     Illegal, // for unsupported tokens
@@ -37,6 +39,49 @@ pub enum Token {
     If,       // if
     Else,     // else
     Return,   // return
+}
+
+impl Display for Token {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            // Special types
+            Token::Illegal => write!(f, "ILLEGAL"),
+            Token::Eof => write!(f, "EOF"),
+
+            // Identifiers + literals
+            Token::Ident(ident) => write!(f, "{}", ident),
+            Token::Int(int) => write!(f, "{}", int),
+
+            // Operators
+            Token::Assign => write!(f, "="),
+            Token::Plus => write!(f, "+"),
+            Token::Minus => write!(f, "-"),
+            Token::Bang => write!(f, "!"),
+            Token::Asterisk => write!(f, "*"),
+            Token::Slash => write!(f, "/"),
+            Token::Lt => write!(f, "<"),
+            Token::Gt => write!(f, ">"),
+            Token::Eq => write!(f, "=="),
+            Token::Noteq => write!(f, "!="),
+
+            // Delimiters
+            Token::Comma => write!(f, ","),
+            Token::Semicolon => write!(f, ","),
+            Token::Lparen => write!(f, "("),
+            Token::Rparen => write!(f, ")"),
+            Token::Lbrace => write!(f, "["),
+            Token::Rbrace => write!(f, "]"),
+
+            // Keywords
+            Token::Function => write!(f, "fn"),
+            Token::Let => write!(f, "let"),
+            Token::True => write!(f, "true"),
+            Token::False => write!(f, "false"),
+            Token::If => write!(f, "if"),
+            Token::Else => write!(f, "else"),
+            Token::Return => write!(f, "return"),
+        }
+    }
 }
 
 pub fn lookup_ident(ident: &str) -> Token {
