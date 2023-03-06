@@ -7,10 +7,10 @@ use crate::{
 // Operator precedence, or "order of operations"
 enum Precedence {
     Lowest,
-    // Equals,      // ==
-    // LessGreater, // < or >
-    // Sum,         // +
-    // Product,     // *
+    Equals,      // ==
+    LessGreater, // < or >
+    Sum,         // +
+    Product,     // *
     Prefix,      // -X or !X
     // Call,        // my_function(X)
 }
@@ -126,14 +126,26 @@ impl Parser {
         expression.map(Statement::Expression)
     }
 
-    fn parse_expression(&mut self, _precedence: Precedence) -> Option<Expression> {
-        self.parse_prefix(self.current_token.clone())
+    fn parse_expression(&mut self, precedence: Precedence) -> Option<Expression> {
+        match self.parse_prefix() {
+            Some(left_expr) => {
+                while self.peek_token != Token::Semicolon && precedence < self.peek_precedence() {
+                    match self.parse_infix() {
+                        Some()
+                        None => {
+                            return Some(left_expr);
+                        },
+                    }
+                }
+            },
+            _ => None,
+        }
     }
 
     // Parse function for tokens in the prefix position
-    fn parse_prefix(&mut self, token: Token) -> Option<Expression> {
-        match token {
-            Token::Ident(ident) => Some(Expression::Identifier(ident)),
+    fn parse_prefix(&mut self) -> Option<Expression> {
+        match &self.current_token {
+            Token::Ident(ident) => Some(Expression::Identifier(ident.to_string())),
             Token::Int(int) => match int.parse() {
                 Ok(value) => Some(Expression::Integer(value)),
                 Err(_) => {

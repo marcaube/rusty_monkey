@@ -132,6 +132,44 @@ fn test_parsing_prefix_expressions() {
     }
 }
 
+#[test]
+fn test_parsing_infix_expressions() {
+    let test_cases = vec![
+        ("5 + 5;", 5, "+", 5),
+        ("5 - 5;", 5, "-", 5),
+        ("5 * 5;", 5, "*", 5),
+        ("5 / 5;", 5, "/", 5),
+        ("5 > 5;", 5, ">", 5),
+        ("5 < 5;", 5, "<", 5),
+        ("5 == 5;", 5, "==", 5),
+        ("5 != 5;", 5, "!=", 5),
+    ];
+
+    for (input, left_value, operator, right_value) in test_cases {
+        let lexer = Lexer::new(input);
+        let mut parser = Parser::new(lexer);
+
+        let program = parser.parse_program();
+
+        assert_no_parser_errors(&parser);
+        assert_program_length(&program, 1);
+
+        assert_eq!(
+            program.statements,
+            vec![
+                Statement::Expression(
+                    Expression::Infix(
+                        Box::new(Expression::Integer(left_value)),
+                        operator.to_string(),
+                        Box::new(Expression::Integer(right_value)),
+                    )
+                )
+            ],
+            "Wrong program statements"
+        )
+    }
+}
+
 fn assert_no_parser_errors(parser: &Parser) {
     assert_eq!(parser.errors.len(), 0, "Parser errors: {:?}", parser.errors,);
 }
